@@ -1,3 +1,5 @@
+use std::fs;
+
 pub fn get_calories_by_elf(input: String) -> Vec<u32> {
     let calories: Vec<u32> = input
         .split("\n")
