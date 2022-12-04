@@ -1,6 +1,7 @@
 mod d1;
 mod d2;
 mod d3;
+mod d4;
 use std::fs;
 
 fn main() {
@@ -35,4 +36,18 @@ fn main() {
         "[2] sum of priorities of group badges: {}",
         d3::get_badge_priority_total(&input)
     );
+    println!();
+
+    println!("========================== Day 4 ==========================");
+    let input = fs::read_to_string("src/d4/input.txt").unwrap();
+    println!(
+        "[1] fully contained assignment pairs: {}",
+        d4::get_total_number_of_fully_contained_assignment_pairs(&input)
+    );
+    println!(
+        "[1] overlapping assignment pairs: {}",
+        d4::get_total_number_of_overlapping_assignment_pairs(&input)
+    );
+
+    println!();
 }
