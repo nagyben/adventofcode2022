@@ -3,6 +3,7 @@ mod d2;
 mod d3;
 mod d4;
 mod d5;
+mod d6;
 use std::fs;
 
 fn main() {
@@ -61,6 +62,19 @@ fn main() {
     println!(
         "[2] crates after moves made (CrateMover9001): {}",
         d5::run_scenario_cratemover9001(&input)
+    );
+
+    println!();
+
+    println!("========================== Day 6 ==========================");
+    let input = fs::read_to_string("src/d6/input.txt").unwrap();
+    println!(
+        "[1] start-of-packet character index (4 distinct characters): {}",
+        d6::find_marker(&input, 4)
+    );
+    println!(
+        "[1] start-of-packet character index (14 distinct characters): {}",
+        d6::find_marker(&input, 14)
     );
 
     println!();
