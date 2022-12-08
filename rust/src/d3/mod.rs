@@ -32,25 +32,32 @@ fn get_item_priority(input: char) -> u32 {
 
 pub fn get_priority_sum(input: &str) -> u32 {
     let shared_items: Vec<Vec<char>> = input
-    .split("\n")
-    .map(|x| get_shared_items_in_rucksack_compartments(x))
-    .collect();
+        .split("\n")
+        .map(|x| get_shared_items_in_rucksack_compartments(x))
+        .collect();
     let priorities: Vec<Vec<u32>> = shared_items
         .into_iter()
         .map(|x| x.into_iter().map(get_item_priority).collect())
         .collect();
 
-    priorities.into_iter().flatten().collect::<Vec<u32>>().iter().sum()
+    priorities
+        .into_iter()
+        .flatten()
+        .collect::<Vec<u32>>()
+        .iter()
+        .sum()
 }
 
 pub fn get_group_badge(input: &str) -> char {
-    let mut unique_items_per_elf = input.split("\n").collect::<Vec<&str>>().iter().map(|x| x.chars().into_iter()
-    .collect::<HashSet<char>>()).collect::<Vec<HashSet<char>>>();
+    let mut unique_items_per_elf = input
+        .split("\n")
+        .collect::<Vec<&str>>()
+        .iter()
+        .map(|x| x.chars().into_iter().collect::<HashSet<char>>())
+        .collect::<Vec<HashSet<char>>>();
 
     let mut result = unique_items_per_elf.pop().unwrap();
-    result.retain(|item| {
-        unique_items_per_elf.iter().all(|set| set.contains(item))
-    });
+    result.retain(|item| unique_items_per_elf.iter().all(|set| set.contains(item)));
     assert_eq!(result.len(), 1);
     result.into_iter().collect::<Vec<char>>()[0]
 }
@@ -61,7 +68,7 @@ fn get_groups(input: &str) -> Vec<String> {
     let mut result: Vec<String> = vec![];
     let mut i = 0;
     while i < lines.len() - 1 {
-        result.push(lines[i..i+3].join("\n"));
+        result.push(lines[i..i + 3].join("\n"));
         i += 3;
     }
     result
@@ -69,8 +76,16 @@ fn get_groups(input: &str) -> Vec<String> {
 
 pub fn get_badge_priority_total(input: &str) -> u32 {
     let groups = get_groups(input);
-    let badges: Vec<char> = groups.into_iter().map(|x| get_group_badge(x.as_str())).collect();
-    badges.into_iter().map(get_item_priority).collect::<Vec<u32>>().iter().sum()
+    let badges: Vec<char> = groups
+        .into_iter()
+        .map(|x| get_group_badge(x.as_str()))
+        .collect();
+    badges
+        .into_iter()
+        .map(get_item_priority)
+        .collect::<Vec<u32>>()
+        .iter()
+        .sum()
 }
 
 #[cfg(test)]
@@ -86,7 +101,10 @@ mod tests {
     #[case("wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn", vec!['v'])]
     #[case("ttgJtRGJQctTZtZT", vec!['t'])]
     #[case("CrZsJsPPZsGzwwsLwLmpwMDw", vec!['s'])]
-    fn test_shared_items_in_rucksack_compartments(#[case] input: &str, #[case] expected: Vec<char>) {
+    fn test_shared_items_in_rucksack_compartments(
+        #[case] input: &str,
+        #[case] expected: Vec<char>,
+    ) {
         let actual = get_shared_items_in_rucksack_compartments(input);
         println!("{:?}", actual);
         assert_eq!(actual, expected);
@@ -104,7 +122,13 @@ mod tests {
     #[case('L', 38)]
     #[case('P', 42)]
     fn test_get_item_priority(#[case] input: char, #[case] expected: u32) {
-        assert_eq!(get_item_priority(input), expected, "expected {} for {}", expected, input);
+        assert_eq!(
+            get_item_priority(input),
+            expected,
+            "expected {} for {}",
+            expected,
+            input
+        );
     }
 
     #[test]
@@ -146,7 +170,10 @@ PmmdzqPrVvPwwTWBwg
 wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
 ttgJtRGJQctTZtZT
 CrZsJsPPZsGzwwsLwLmpwMDw"#;
-        let expected: Vec<&str> = vec!["vJrwpWtwJgWrhcsFMMfFFhFp\njqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\nPmmdzqPrVvPwwTWBwg", "wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn\nttgJtRGJQctTZtZT\nCrZsJsPPZsGzwwsLwLmpwMDw"];
+        let expected: Vec<&str> = vec![
+            "vJrwpWtwJgWrhcsFMMfFFhFp\njqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\nPmmdzqPrVvPwwTWBwg",
+            "wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn\nttgJtRGJQctTZtZT\nCrZsJsPPZsGzwwsLwLmpwMDw",
+        ];
         let actual = get_groups(input);
         assert_eq!(actual, expected);
     }

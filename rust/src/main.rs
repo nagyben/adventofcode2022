@@ -2,6 +2,7 @@ mod d1;
 mod d2;
 mod d3;
 mod d4;
+mod d5;
 use std::fs;
 
 fn main() {
@@ -47,6 +48,19 @@ fn main() {
     println!(
         "[1] overlapping assignment pairs: {}",
         d4::get_total_number_of_overlapping_assignment_pairs(&input)
+    );
+
+    println!();
+
+    println!("========================== Day 5 ==========================");
+    let input = fs::read_to_string("src/d5/input.txt").unwrap();
+    println!(
+        "[1] crates after moves made (CrateMover9000): {}",
+        d5::run_scenario_cratemover9000(&input)
+    );
+    println!(
+        "[2] crates after moves made (CrateMover9001): {}",
+        d5::run_scenario_cratemover9001(&input)
     );
 
     println!();
