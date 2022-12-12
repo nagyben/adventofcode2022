@@ -2,9 +2,9 @@ use std::collections::HashSet;
 
 pub fn find_marker(input: &str, num_distint_chars: usize) -> usize {
     for i in 0..input.len() {
-        let hs: HashSet<char> = HashSet::from_iter(input[i..i+num_distint_chars].chars());
+        let hs: HashSet<char> = HashSet::from_iter(input[i..i + num_distint_chars].chars());
         if hs.len() == num_distint_chars {
-            return i+num_distint_chars
+            return i + num_distint_chars;
         }
     }
     panic!()
