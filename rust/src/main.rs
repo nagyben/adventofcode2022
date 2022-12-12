@@ -4,6 +4,7 @@ mod d3;
 mod d4;
 mod d5;
 mod d6;
+mod d8;
 use std::fs;
 
 fn main() {
@@ -73,8 +74,23 @@ fn main() {
         d6::find_marker(&input, 4)
     );
     println!(
-        "[1] start-of-packet character index (14 distinct characters): {}",
+        "[2] start-of-packet character index (14 distinct characters): {}",
         d6::find_marker(&input, 14)
+    );
+
+    println!();
+
+    println!("========================== Day 7 ==========================");
+
+    println!("========================== Day 8 ==========================");
+    let input = fs::read_to_string("src/d8/input.txt").unwrap();
+    println!(
+        "[1] number of visible trees: {}",
+        d8::get_number_of_visible_trees(&input)
+    );
+    println!(
+        "[2] max scenic score: {}",
+        d8::get_scenic_score_from_string(&input)
     );
 
     println!();

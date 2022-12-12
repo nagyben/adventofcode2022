@@ -1,4 +1,4 @@
-use std::{collections::HashMap, hash::Hash, rc::Rc};
+use std::collections::HashMap;
 
 type Stack = Vec<char>;
 type Stacks = HashMap<usize, Stack>;
@@ -9,16 +9,16 @@ fn initialize_stacks_from_input(input: &str) -> Stacks {
     let num_stacks = get_number_of_stacks(input);
     let mut stacks: Stacks = HashMap::new();
     for i in 0..num_stacks {
-        stacks.insert(i+1, vec![]);
+        stacks.insert(i + 1, vec![]);
     }
 
     for line in input.split("\n").collect::<Vec<&str>>() {
         if get_input_line_type(line) == LineType::Crates {
             for i in 0..num_stacks {
-                match line.chars().nth(i*4+1) {
-                    Some(' ') => {},
+                match line.chars().nth(i * 4 + 1) {
+                    Some(' ') => {}
                     Some(x) => {
-                        if let Some(stack) = stacks.get_mut(&(i+1)) {
+                        if let Some(stack) = stacks.get_mut(&(i + 1)) {
                             stack.push(x)
                         }
                     }
@@ -36,7 +36,7 @@ fn initialize_stacks_from_input(input: &str) -> Stacks {
 fn get_number_of_stacks(input: &str) -> usize {
     for line in input.split("\n").collect::<Vec<&str>>() {
         if get_input_line_type(line) == LineType::StackIDs {
-            return line.replace(" ", "").len()
+            return line.replace(" ", "").len();
         }
     }
 
@@ -68,12 +68,16 @@ fn get_input_line_type(input: &str) -> LineType {
 struct MoveInstruction {
     from_stack_id: usize,
     to_stack_id: usize,
-    number_of_crates: usize
+    number_of_crates: usize,
 }
 
 impl MoveInstruction {
     pub fn new(from: usize, to: usize, num: usize) -> MoveInstruction {
-        MoveInstruction { from_stack_id: from, to_stack_id: to, number_of_crates: num }
+        MoveInstruction {
+            from_stack_id: from,
+            to_stack_id: to,
+            number_of_crates: num,
+        }
     }
 }
 
@@ -88,7 +92,10 @@ fn get_move_instruction_from_line(line: &str) -> MoveInstruction {
     }
 }
 
-fn apply_move_instruction_cratemover9000(stacks: &mut Stacks, move_instruction: MoveInstruction) -> () {
+fn apply_move_instruction_cratemover9000(
+    stacks: &mut Stacks,
+    move_instruction: MoveInstruction,
+) -> () {
     for _ in 0..move_instruction.number_of_crates {
         let from = stacks.get_mut(&move_instruction.from_stack_id).unwrap();
         let c = from.pop().unwrap();
@@ -97,7 +104,10 @@ fn apply_move_instruction_cratemover9000(stacks: &mut Stacks, move_instruction: 
     }
 }
 
-fn apply_move_instruction_cratemover9001(stacks: &mut Stacks, move_instruction: MoveInstruction) -> () {
+fn apply_move_instruction_cratemover9001(
+    stacks: &mut Stacks,
+    move_instruction: MoveInstruction,
+) -> () {
     let mut tmp_crates: Vec<char> = vec![];
     for _ in 0..move_instruction.number_of_crates {
         let from = stacks.get_mut(&move_instruction.from_stack_id).unwrap();
@@ -108,7 +118,11 @@ fn apply_move_instruction_cratemover9001(stacks: &mut Stacks, move_instruction: 
     to.append(&mut tmp_crates)
 }
 
-fn apply_move_instruction(stacks: &mut Stacks, move_instruction: MoveInstruction, apply_fn: &dyn Fn(&mut Stacks, MoveInstruction) -> ()) {
+fn apply_move_instruction(
+    stacks: &mut Stacks,
+    move_instruction: MoveInstruction,
+    apply_fn: &dyn Fn(&mut Stacks, MoveInstruction) -> (),
+) {
     apply_fn(stacks, move_instruction)
 }
 
@@ -122,9 +136,7 @@ pub fn run_scenario_cratemover9000(input: &str) -> String {
     }
     let mut output = String::from("");
     for i in 0..stacks.len() {
-        output.push(stacks.get(&(i+1)).unwrap().to_owned()
-            .pop().unwrap()
-        );
+        output.push(stacks.get(&(i + 1)).unwrap().to_owned().pop().unwrap());
     }
     output
 }
@@ -139,9 +151,7 @@ pub fn run_scenario_cratemover9001(input: &str) -> String {
     }
     let mut output = String::from("");
     for i in 0..stacks.len() {
-        output.push(stacks.get(&(i+1)).unwrap().to_owned()
-            .pop().unwrap()
-        );
+        output.push(stacks.get(&(i + 1)).unwrap().to_owned().pop().unwrap());
     }
     output
 }
@@ -261,12 +271,14 @@ move 1 from 1 to 2"#;
 
         apply_move_instruction_cratemover9000(&mut stacks, mi);
 
-        assert_eq!(stacks, Stacks::from([
-            (1, vec!['Z', 'N', 'D']),
-            (2, vec!['M', 'C']),
-            (3, vec!['P']),
-        ]));
-
+        assert_eq!(
+            stacks,
+            Stacks::from([
+                (1, vec!['Z', 'N', 'D']),
+                (2, vec!['M', 'C']),
+                (3, vec!['P']),
+            ])
+        );
     }
 
     #[test]
@@ -280,11 +292,14 @@ move 1 from 1 to 2"#;
 
         apply_move_instruction(&mut stacks, mi, &apply_move_instruction_cratemover9000);
 
-        assert_eq!(stacks, Stacks::from([
-            (1, vec![]),
-            (2, vec!['M', 'C']),
-            (3, vec!['P', 'D', 'N', 'Z']),
-        ]));
+        assert_eq!(
+            stacks,
+            Stacks::from([
+                (1, vec![]),
+                (2, vec!['M', 'C']),
+                (3, vec!['P', 'D', 'N', 'Z']),
+            ])
+        );
     }
 
     #[test]
@@ -298,10 +313,13 @@ move 1 from 1 to 2"#;
 
         apply_move_instruction(&mut stacks, mi, &apply_move_instruction_cratemover9001);
 
-        assert_eq!(stacks, Stacks::from([
-            (1, vec![]),
-            (2, vec!['M', 'C']),
-            (3, vec!['P', 'Z', 'N', 'D']),
-        ]));
+        assert_eq!(
+            stacks,
+            Stacks::from([
+                (1, vec![]),
+                (2, vec!['M', 'C']),
+                (3, vec!['P', 'Z', 'N', 'D']),
+            ])
+        );
     }
 }
