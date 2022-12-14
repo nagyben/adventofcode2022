@@ -5,6 +5,7 @@ mod d4;
 mod d5;
 mod d6;
 mod d8;
+mod d9;
 use std::fs;
 
 fn main() {
@@ -91,6 +92,19 @@ fn main() {
     println!(
         "[2] max scenic score: {}",
         d8::get_scenic_score_from_string(&input)
+    );
+
+    println!();
+
+    println!("========================== Day 9 ==========================");
+    let input = fs::read_to_string("src/d9/input.txt").unwrap();
+    println!(
+        "[1] number of unique visits with short rope: {}",
+        d9::short_rope_unique_locations(&input)
+    );
+    println!(
+        "[2] number of unique visits with long rope: {}",
+        d9::long_rope_unique_locations(&input)
     );
 
     println!();
