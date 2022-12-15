@@ -6,6 +6,7 @@ mod d5;
 mod d6;
 mod d8;
 mod d9;
+mod d10;
 use std::fs;
 
 fn main() {
@@ -106,6 +107,17 @@ fn main() {
         "[2] number of unique visits with long rope: {}",
         d9::long_rope_unique_locations(&input)
     );
+
+    println!();
+
+    println!("========================== Day 10 ==========================");
+    let input = fs::read_to_string("src/d10/input.txt").unwrap();
+    println!(
+        "[1] sum of signal strengths: {}",
+        d10::total_signal_strength(&input)
+    );
+    println!("[2] output:");
+    d10::draw_crt(&input);
 
     println!();
 }
