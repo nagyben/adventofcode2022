@@ -7,6 +7,7 @@ mod d6;
 mod d8;
 mod d9;
 mod d10;
+mod d12;
 use std::fs;
 
 fn main() {
@@ -118,6 +119,19 @@ fn main() {
     );
     println!("[2] output:");
     d10::draw_crt(&input);
+
+    println!();
+
+    println!("========================== Day 12 ==========================");
+    let input = fs::read_to_string("src/d12/input.txt").unwrap();
+    println!(
+        "[1] length of shortest path to best signal point: {}",
+        d12::shortest_path(&input)
+    );
+    println!(
+        "[2] length of shortest hiking trail: {}",
+        d12::hiking_trail_shortest_path(&input)
+    );
 
     println!();
 }

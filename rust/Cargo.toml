@@ -8,6 +8,7 @@ edition = "2021"
 [dependencies]
 ndarray = "0.15.6"
 num-traits = "0.2.15"
+petgraph = "0.6.2"
 regex = "1.7.0"
 
 [dev-dependencies]
