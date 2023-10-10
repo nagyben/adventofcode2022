@@ -7,6 +7,8 @@ edition = "2021"
 
 [dependencies]
 ndarray = "0.15.6"
+nom = "7.1.3"
+num = { version = "0.4.1", features = ["num-bigint"] }
 num-traits = "0.2.15"
 petgraph = "0.6.2"
 regex = "1.7.0"
