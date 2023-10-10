@@ -1,4 +1,7 @@
 mod d1;
+mod d10;
+mod d11;
+mod d12;
 mod d2;
 mod d3;
 mod d4;
@@ -6,8 +9,6 @@ mod d5;
 mod d6;
 mod d8;
 mod d9;
-mod d10;
-mod d12;
 use std::fs;
 
 fn main() {
@@ -122,6 +123,12 @@ fn main() {
 
     println!();
 
+    println!("========================== Day 11 ==========================");
+    let input = fs::read_to_string("src/d11/input.txt").unwrap();
+    println!("[1] monkey business level {}", d11::part1(&input));
+    println!("[2] monkey business level {}", d11::part2(&input));
+
+    println!();
     println!("========================== Day 12 ==========================");
     let input = fs::read_to_string("src/d12/input.txt").unwrap();
     println!(
