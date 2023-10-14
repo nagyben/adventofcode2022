@@ -2,6 +2,7 @@ mod d1;
 mod d10;
 mod d11;
 mod d12;
+mod d14;
 mod d2;
 mod d3;
 mod d4;
@@ -138,6 +139,19 @@ fn main() {
     println!(
         "[2] length of shortest hiking trail: {}",
         d12::hiking_trail_shortest_path(&input)
+    );
+
+    println!();
+    println!("========================== Day 14 ==========================");
+    let input = fs::read_to_string("src/d14/input.txt").unwrap();
+
+    println!(
+        "[1] number of sand particles that fell: {}",
+        d14::part1(&input)
+    );
+    println!(
+        "[2] number of sand particles that fell with bedrock: {}",
+        d14::part2(&input)
     );
 
     println!();
