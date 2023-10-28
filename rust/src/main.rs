@@ -156,4 +156,9 @@ fn main() {
     );
 
     println!();
+    println!("========================== Day 15 ==========================");
+    println!("Give it a few seconds...");
+    println!("[1] beaconless positions: {}", d15::part1());
+
+    println!();
 }
