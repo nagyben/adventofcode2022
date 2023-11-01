@@ -1,3 +1,4 @@
+use core::fmt;
 use std::{
     cmp::{max, min},
     collections::HashSet,
@@ -12,7 +13,19 @@ use nom::{
     Err, IResult, InputIter, InputLength,
 };
 
+#[derive(Clone)]
 struct Cave<'a>(&'a Vec<Vec<char>>);
+
+impl fmt::Debug for Cave<'_> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let mut output = "".to_string();
+        self.0.iter().for_each(|row| {
+            output += &row.into_iter().collect::<String>();
+            output += "\n";
+        });
+        write!(f, "{}", output)
+    }
+}
 
 fn parse(input: &str) -> Result<String, Err<nom::error::Error<&str>>> {
     let (input, sensors_beacons) = many1(parse_line)(input)?;
@@ -144,25 +157,57 @@ fn number_of_beacons_in_row(sb: Vec<(Sensor, Beacon)>, target_row: usize) -> usi
 
 fn cave_vec(input: &str, max_size: usize) -> Vec<Vec<char>> {
     let sb = parse_sensor_beacon(input);
-    let mut out = vec![vec!['.'; max_size]; max_size];
+    sensor_beacon_to_cave_vec(max_size, sb)
+}
+
+fn sensor_beacon_to_cave_vec(max_size: usize, sb: Vec<(Sensor, Beacon)>) -> Vec<Vec<char>> {
+    let mut out = vec![vec!['.'; max_size + 1]; max_size + 1];
 
     for (sensor, beacon) in sb.iter() {
         let distance = manhattan_distance(sensor, beacon);
-        let mut x = 1;
+        let mut x = 0;
         for y in sensor.y - (distance as isize)..sensor.y {
-            println!("{}", y);
             let mut _y = max(y, 0) as usize;
 
             let x_min = max(sensor.x - x, 0) as usize;
-            let x_max = min(sensor.x + x, (max_size - 1) as isize) as usize;
+            let x_max = min(sensor.x + x, (max_size) as isize) as usize;
             for _x in x_min..=x_max {
                 out[_y][_x] = '#';
             }
-            x += 2;
+            x += 1;
+        }
+        let mut x = distance as isize;
+        for y in sensor.y..sensor.y + (distance as isize) {
+            let mut _y = max(min(y, (max_size) as isize), 0) as usize;
+
+            let x_min = max(sensor.x - x, 0) as usize;
+            let x_max = min(sensor.x + x, (max_size as isize)) as usize;
+            for _x in x_min..=x_max {
+                out[_y][_x] = '#';
+            }
+            x -= 1;
+        }
+    }
+
+    for (sensor, beacon) in sb.iter() {
+        if sensor.x >= 0
+            && sensor.y >= 0
+            && sensor.x <= max_size as isize
+            && sensor.y <= max_size as isize
+        {
+            out[sensor.y as usize][sensor.x as usize] = 'S';
+        }
+        if beacon.x >= 0
+            && beacon.y >= 0
+            && beacon.x <= max_size as isize
+            && beacon.y <= max_size as isize
+        {
+            out[beacon.y as usize][beacon.x as usize] = 'B';
         }
     }
     out
 }
+
 pub fn part1() -> usize {
     let input = include_str!("input.txt");
     beaconless_positions(input, 2000000)
@@ -236,7 +281,7 @@ B...........................
     }
     #[test]
     fn test_cave_vec() {
-        let actual = cave_to_string(&cave_vec(INPUT, 20));
+        let actual = cave_vec(INPUT, 20);
         let expected = r#"....S.......................
 ......................S.....
 ...............S............
@@ -260,8 +305,39 @@ B...........................
 ............S......S........
 ............................
 .......................B...."#;
-        println!("{:?}", actual);
+        println!("{:?}", Cave(&actual));
         println!("{:?}", expected);
-        assert_eq!(actual, expected);
+        assert_eq!(cave_to_string(&actual), expected);
+    }
+    #[test]
+    fn test_one_sensor_and_beacon() {
+        let input = vec![(Sensor { x: 2, y: 18 }, Beacon { x: -2, y: 15 })];
+        let actual = sensor_beacon_to_cave_vec(20, input);
+        let expected = r#"....S.......................
+......................S.....
+...............S............
+................SB..........
+............................
+............................
+............................
+..........S.......S.........
+............................
+............................
+....B.......................
+..S.........................
+............................
+............................
+..............S.......S.....
+B...........................
+...........SB...............
+................S..........B
+....S.......................
+............................
+............S......S........
+............................
+.......................B...."#;
+        println!("{:?}", Cave(&actual));
+        println!("{:?}", expected);
+        assert_eq!(cave_to_string(&actual), expected);
     }
 }
